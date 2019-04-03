@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/chenbo/logs/sun-flower-collection-trans.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[sun-flower-collection-trans] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-trans.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>[sun-flower-collection-trans] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.sun.flower" level="info"/>
+    <logger name="org.springframework" level="info"/>
+
+    <root>
+        <appender-ref ref="file"></appender-ref>
+        <appender-ref ref="STDOUT"></appender-ref>
+    </root>
+
+    <!-- 质量日志 -->
+    <appender name="qualitylogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/chenbo/logs/sun-flower-collection-trans-quality.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-trans-quality.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.sun.flower.filter.LoggerFilter" level="info" additivity="false">
+        <appender-ref ref="qualitylogAppender"></appender-ref>
+    </logger>
+
+</configuration>

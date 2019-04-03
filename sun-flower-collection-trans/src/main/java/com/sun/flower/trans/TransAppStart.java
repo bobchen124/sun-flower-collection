@@ -1,7 +1,10 @@
 package com.sun.flower.trans;
 
+import com.sun.flower.filter.LoggerFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @Desc:
@@ -13,6 +16,19 @@ public class TransAppStart {
 
     public static void main(String[] args) {
         SpringApplication.run(TransAppStart.class, args);
+    }
+
+    /**
+     * 初始化质量日志
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean initLoggerFilter() {
+        LoggerFilter loggerFilter = new LoggerFilter("sun-flower-collection-trans");
+
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(loggerFilter);
+
+        return filterRegistrationBean;
     }
 
 }
