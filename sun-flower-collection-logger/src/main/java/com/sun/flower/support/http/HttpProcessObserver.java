@@ -1,7 +1,9 @@
 package com.sun.flower.support.http;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sun.flower.support.compactor.ContentCompactor;
 import com.sun.flower.support.utils.CommonUtils;
+import lombok.Data;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -13,6 +15,7 @@ import java.util.Map;
  * @Author: chenbo
  * @Date: 2019/4/2 17:02
  **/
+@Data
 public class HttpProcessObserver {
 
     /**
@@ -30,13 +33,21 @@ public class HttpProcessObserver {
      */
     private static final String COMMUNICATION_TYPE_HTTP = "HTTP";
 
+    private String appName;
+
     /**
      * 开始时间
      */
     private long beginTime;
 
+    /**
+     * 结束时间
+     */
     private long endTime;
 
+    /**
+     * 请求处理时长
+     */
     private long duration;
 
     /**
@@ -44,11 +55,10 @@ public class HttpProcessObserver {
      */
     private String uri;
 
+    /**
+     * http方法
+     */
     private String httpMethod;
-
-    private long requestContentLength;
-
-    private long responseContentLength;
 
     private String clientInfo;
 
@@ -60,9 +70,24 @@ public class HttpProcessObserver {
     private Map<String, String> requestParams = new HashMap<String, String>();
 
     /**
+     * 请求参数字符串
+     */
+    private String requestContent;
+
+    /**
+     * 请求数据长度
+     */
+    private long requestContentLength;
+
+    /**
      * 返回内容
      */
-    private String content;
+    private String responseContent;
+
+    /**
+     * 响应数据长度
+     */
+    private long responseContentLength;
 
     private int httpStatus;
 
@@ -78,7 +103,8 @@ public class HttpProcessObserver {
      * 构造函数
      * @param compactor
      */
-    public HttpProcessObserver(ContentCompactor compactor) {
+    public HttpProcessObserver(String appName, ContentCompactor compactor) {
+        this.appName = appName;
         this.compactor = compactor;
     }
 
@@ -118,15 +144,6 @@ public class HttpProcessObserver {
     }
 
     /**
-     * 获取响应内容，并将其转换为字符串类型
-     * @return
-     */
-    private String getResponseContent() {
-        String rtn = "";
-        return "";
-    }
-
-    /**
      * 处理HttpServletRequest请求
      * @param request
      */
@@ -137,10 +154,11 @@ public class HttpProcessObserver {
         this.serverInfo = request.getLocalAddr() + ":" + request.getLocalPort();
 
         this.uri = request.getRequestURI();
-        this.requestContentLength = request.getContentLength() > 0 ? request.getContentLength() : 0;
-
         this.httpMethod = request.getMethod();
+
         this.initRequestParams(request);
+        this.requestContent = JSONObject.toJSONString(this.requestParams);
+        this.requestContentLength = this.requestContent.length();
     }
 
     /**
@@ -155,12 +173,54 @@ public class HttpProcessObserver {
         this.responseContentType = responseWrapper.getContentType();
 
         this.responseContentLength = responseWrapper.getContentLength();
-        this.content = responseWrapper.getContent(responseWrapper.getCharacterEncoding());
+        this.responseContent = responseWrapper.getContent(responseWrapper.getCharacterEncoding());
 
-        if (this.compactor != null && this.content != null) {
+        if (this.compactor != null && this.responseContent != null) {
             //this.content = (String)CommonUtils.trimContent(this.content, this.compactor);
         }
-        //this.responseContent = responseWrapper.get
     }
 
+    /**
+     * 处理响应内容，去除不合规则字符
+     * @param content
+     * @return
+     */
+    public String trimContent(String content) {
+        try {
+            content = CommonUtils.ignoreInvalidCharacters(content);
+
+            if (this.compactor != null) {
+                content = compactor.compact(content);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return content;
+    }
+
+    /**
+     * 生成质量日志所需要的日志内容数组
+     * @return
+     */
+    public Object[] buildMessageParams() {
+        return new Object[] {
+                this.appName,
+                LOG_TYPE_QUALITY,
+                COMMUNICATION_TYPE_HTTP,
+                this.clientInfo,
+                this.serverInfo,
+                this.beginTime,
+                this.endTime,
+                this.duration,
+                this.uri,
+                this.httpStatus,
+                this.httpMethod,
+                this.responseContentType,
+                this.requestContentLength,
+                this.responseContentLength,
+                trimContent(this.requestContent),
+                trimContent(this.responseContent)
+        };
+    }
 }

@@ -2,6 +2,8 @@ package com.sun.flower.filter;
 
 import com.sun.flower.support.compactor.ContentCompactor;
 import com.sun.flower.support.compactor.CutoffContentCompactor;
+import com.sun.flower.support.http.HttpProcessObserver;
+import com.sun.flower.support.http.HttpResponseWrapper;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.Filter;
@@ -16,14 +18,14 @@ import java.io.IOException;
 
 
 /**
- * @Desc:
+ * @Desc: 日志过滤器
  * @Author: chenbo
  * @Date: 2019/3/22 19:22
  **/
 @Slf4j
 public class LoggerFilter implements Filter {
 
-    //Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
+    //private final Logger log = LoggerFactory.getLogger(LoggerFilter.class);
 
     /**
      * 应用名
@@ -54,11 +56,45 @@ public class LoggerFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse && isStaticHttpRequet(servletRequest)) {
-            log.info("-----" + appName);
+        if (servletRequest instanceof HttpServletRequest && servletResponse instanceof HttpServletResponse && !isStaticHttpRequet(servletRequest)) {
+            HttpResponseWrapper wrapper = new HttpResponseWrapper((HttpServletResponse)servletResponse);
+            HttpProcessObserver observer = new HttpProcessObserver(this.appName, contentCompactor);
 
+            // 开始处理
+            observer.beginProcess((HttpServletRequest)servletRequest);
+
+            try {
+                filterChain.doFilter(servletRequest, wrapper);
+            } catch (Throwable ex) {
+                // TODO 记录异常日志
+                ex.printStackTrace();
+                throw ex;
+            }
+
+            // 请求结束，处理
+            observer.endProcess(wrapper);
+
+            write(wrapper, observer);
         } else {
+            //log.info("{}|{}", this.appName, System.currentTimeMillis());
             filterChain.doFilter(servletRequest, servletResponse);
+        }
+    }
+
+    /**
+     * 数据写入日志
+     * @param wrapper
+     * @param observer
+     * @throws IOException
+     */
+    private void write(HttpResponseWrapper wrapper, HttpProcessObserver observer) throws IOException {
+        try {
+            // 记录日志 16个参数
+            log.info("{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}", observer.buildMessageParams());
+        } catch (Exception e) {
+            //NO OP
+        } finally {
+            wrapper.copyBodyToResponse();
         }
     }
 
