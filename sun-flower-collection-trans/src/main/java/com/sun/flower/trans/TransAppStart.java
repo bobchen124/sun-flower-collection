@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 
 /**
  * @Desc:
@@ -24,7 +23,6 @@ public class TransAppStart {
      * @return
      */
     @Bean
-    @Order(0)
     public FilterRegistrationBean initLoggerFilter() {
         LoggerFilter loggerFilter = new LoggerFilter("sun-flower-collection-trans");
 
