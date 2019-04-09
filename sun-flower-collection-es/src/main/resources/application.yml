@@ -1,0 +1,5 @@
+server:
+  port: 9100
+
+elasticsearch:
+  ip: 127.0.0.1:9200
