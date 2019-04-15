@@ -14,6 +14,7 @@
         <module>sun-flower-collection-logger</module>
         <module>sun-flower-collection-trans</module>
         <module>sun-flower-collection-es</module>
+        <module>sun-flower-collection-hbase</module>
     </modules>
 
     <parent>

@@ -1,0 +1,8 @@
+server:
+  port: 9810
+
+hbase:
+ zk:
+  host: localhost
+  port: 2181
+  nodeParent: /hbase
