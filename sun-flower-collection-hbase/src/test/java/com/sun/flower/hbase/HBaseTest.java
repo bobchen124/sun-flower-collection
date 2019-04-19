@@ -1,5 +1,6 @@
 package com.sun.flower.hbase;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -8,13 +9,19 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.AdvancedScanResultConsumer;
 import org.apache.hadoop.hbase.client.AsyncConnection;
 import org.apache.hadoop.hbase.client.AsyncTable;
+import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
+import org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.client.TableDescriptor;
+import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
 import org.apache.hadoop.hbase.filter.ColumnPaginationFilter;
 import org.apache.hadoop.hbase.filter.ColumnValueFilter;
 import org.apache.hadoop.hbase.filter.PageFilter;
@@ -25,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -41,6 +49,57 @@ public class HBaseTest {
 
     @Autowired
     Configuration configuration;
+
+    /**
+     * 初始化测试数据表
+     */
+    @Test
+    public void initTestTable() throws Exception {
+        Connection connection = ConnectionFactory.createConnection(configuration);
+
+        HBaseAdmin admin = (HBaseAdmin)connection.getAdmin();
+
+        if (admin.tableExists(TableName.valueOf(TABLE_NAME))) {
+            log.info("table is exists, do not create");
+            return;
+        }
+
+        TableDescriptorBuilder descriptorBuilder = TableDescriptorBuilder.newBuilder(TableName.valueOf(TABLE_NAME));
+
+        ColumnFamilyDescriptor familyDescriptor = ColumnFamilyDescriptorBuilder.of("cf");
+        descriptorBuilder.setColumnFamily(familyDescriptor);
+
+        TableDescriptor tableDescriptor = descriptorBuilder.build();
+        admin.createTable(tableDescriptor);
+        log.info("table is not exists, create success");
+    }
+
+    /**
+     * 初始化测试数据
+     * @throws Exception
+     */
+    @Test
+    public void initTableData() throws Exception {
+        try (Connection connection = ConnectionFactory.createConnection(configuration);
+             Table table = connection.getTable(TableName.valueOf(TABLE_NAME))) {
+            // 创建put对象
+            Put put1 = new Put(Bytes.toBytes("r1"));
+            put1.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("name"), Bytes.toBytes("test-1"));
+            put1.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("sex"), Bytes.toBytes("N"));
+            put1.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("age"), Bytes.toBytes("30"));
+
+            Put put2 = new Put(Bytes.toBytes("r2"));
+            put2.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("name"), Bytes.toBytes("test-2"));
+            put2.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("sex"), Bytes.toBytes("Y"));
+
+            Put put3 = new Put(Bytes.toBytes("r3"));
+            put3.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("name"), Bytes.toBytes("test-3"));
+            put3.addColumn(Bytes.toBytes("cf"), Bytes.toBytes("sex"), Bytes.toBytes("N"));
+
+            table.put(Lists.newArrayList(put1, put2, put3));
+        }
+    }
+
 
     /**
      * ColumnValueFilter 过滤，查询Column 为固定值
@@ -89,6 +148,11 @@ public class HBaseTest {
 
         System.out.println("row = " + new String(result.getValue("cf".getBytes(), "name".getBytes())));
         System.out.println("row = " + new String(result.getValue("cf".getBytes(), "sex".getBytes())));
+
+        List<Cell> cells = result.listCells();
+        cells.forEach(cell -> {
+            log.info(" timestamp = {}", cell.getTimestamp());
+        });
     }
 
     /**
