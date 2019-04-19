@@ -22,12 +22,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-hadoop -->
+        <!-- spring-data-hadoop
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-hadoop</artifactId>
             <version>${spring.hadoop.version}</version>
-        </dependency>
+        </dependency> -->
 
         <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase-client -->
         <dependency>
@@ -36,12 +36,12 @@
             <version>2.1.4</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>3.1.2</version>
-        </dependency>
+            <version>2.7.7</version>
+        </dependency> -->
 
     </dependencies>
 

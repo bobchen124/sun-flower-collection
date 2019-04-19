@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HBaseAppStart {
 
     public static void main(String[] args) {
-        SpringApplication.run(HBaseAppStart.class);
+        SpringApplication.run(HBaseAppStart.class, args);
     }
 
 }

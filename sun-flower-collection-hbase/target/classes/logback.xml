@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>[sun-flower-collection-hbase] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.sun.flower" level="info"/>
+    <logger name="org.springframework" level="info"/>
+
+    <root>
+        <appender-ref ref="STDOUT"></appender-ref>
+    </root>
+
+</configuration>
