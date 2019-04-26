@@ -11,9 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,16 +39,16 @@ public class LocalCacheController implements InitializingBean {
 
     RemovalListener<Object, List<String>> removalListener;
 
-    @RequestMapping("/one")
-    public List<String> findByKeyOne(KeyOne keyOne) throws Exception {
+    @PostMapping("/one")
+    public List<String> findByKeyOne(@Valid KeyOne keyOne) throws Exception {
         List<String> stringList = keyOneListCache.get(keyOne);
         return stringList;
     }
 
     @RequestMapping("/two")
     public List<String> findByKeyOne(KeyTwo keyTwo) {
-        List<String> stringList = localCacheService.getByKeyTwo(keyTwo);
-        return stringList;
+        WeakReference<List<String>> stringList = new WeakReference(localCacheService.getByKeyTwo(keyTwo));
+        return stringList.get();
     }
 
     @GetMapping("/str")

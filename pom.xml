@@ -15,6 +15,7 @@
         <module>sun-flower-collection-trans</module>
         <module>sun-flower-collection-es</module>
         <module>sun-flower-collection-hbase</module>
+        <module>sun-flower-collection-redisson</module>
     </modules>
 
     <parent>
