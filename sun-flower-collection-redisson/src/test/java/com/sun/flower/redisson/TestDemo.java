@@ -4,6 +4,7 @@ import com.sun.flower.redisson.rate.RateLimiterDemo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RAtomicLong;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,20 @@ public class TestDemo {
         log.info("{}", bucket.isExists());
         log.info("get-two, {}", bucket.get());
     }
+
+    public void testAtomicLong() {
+        RAtomicLong atomicLong = redissonClient.getAtomicLong("atomic-long-test");
+        long v = atomicLong.incrementAndGet();
+        log.info("val = {}", v);
+
+        if (v == 1L) {
+            atomicLong.expire(1, TimeUnit.MINUTES);
+        }
+
+        if (v > 10) {
+            log.info("more than limit");
+        }
+    }
+
 
 }
