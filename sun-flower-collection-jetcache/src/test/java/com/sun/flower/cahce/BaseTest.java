@@ -1,7 +1,8 @@
 package com.sun.flower.cahce;
 
 import com.sun.flower.jetcache.JetCacheAppStart;
-import com.sun.flower.jetcache.service.BaseCacheService;
+import com.sun.flower.jetcache.param.ParamDTO;
+import com.sun.flower.jetcache.service.IBaseCacheService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BaseTest {
 
     @Autowired
-    BaseCacheService cacheService;
+    IBaseCacheService cacheService;
 
     @Test
     public void baseTest() throws Exception {
+        ParamDTO paramDTO = new ParamDTO();
+        paramDTO.setCat(1);
+        paramDTO.setPage(1);
+
         for (;;) {
-            System.out.println("====" + cacheService.getCache("base"));
+            System.out.println("====" + cacheService.getCache(paramDTO));
 
             Thread.sleep(30000);
         }

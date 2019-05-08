@@ -18,6 +18,7 @@
         <module>sun-flower-collection-redisson</module>
         <module>sun-flower-collection-mq</module>
         <module>sun-flower-collection-jetcache</module>
+        <module>sun-flower-collection-common</module>
     </modules>
 
     <parent>
