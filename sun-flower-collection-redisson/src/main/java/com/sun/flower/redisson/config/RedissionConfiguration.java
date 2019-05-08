@@ -35,9 +35,10 @@ public class RedissionConfiguration {
         return is;
     }
 
-    @Bean
+    //@Bean
     public RedissonClient redisson() {
         Config config = null;
+
         if (this.redissonProperties.getConfig() != null) {
             try {
                 InputStream is = this.getConfigStream();
@@ -51,6 +52,12 @@ public class RedissionConfiguration {
                 }
             }
         }
+
         return Redisson.create(config);
+    }
+
+    @Bean
+    public RedissonClient redissonClient() {
+        return Redisson.create();
     }
 }

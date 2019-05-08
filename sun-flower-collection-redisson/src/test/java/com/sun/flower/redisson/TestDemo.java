@@ -1,5 +1,6 @@
 package com.sun.flower.redisson;
 
+import com.sun.flower.redisson.entity.DemoOne;
 import com.sun.flower.redisson.rate.RateLimiterDemo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -47,17 +48,20 @@ public class TestDemo {
     }
 
     @Test
-    public void testBucket() throws Exception {
-        RBucket<String> bucket = redissonClient.getBucket("bucket-test-0n33");
+    public void testBucket() {
+        RBucket<String> bucket = redissonClient.getBucket("bucket-test-0n33-001");
         log.info("get bucket , {}", (bucket == null));
 
-        bucket.set("test", 1, TimeUnit.SECONDS);
-        log.info("{}", bucket.isExists());
-        log.info("get-one , {}", bucket.get());
+        bucket.set("test", 2, TimeUnit.SECONDS);
 
-        Thread.sleep(1000);
-        log.info("{}", bucket.isExists());
-        log.info("get-two, {}", bucket.get());
+        for (;;) {
+            log.info("get-one, isExists = {}, val = {}", bucket.isExists(), bucket.get());
+
+            if (bucket.get() == null) {
+                log.info("cache val is null, isExists = {}, val = {}", bucket.isExists(), bucket.get());
+                break;
+            }
+        }
     }
 
     public void testAtomicLong() {
@@ -74,5 +78,28 @@ public class TestDemo {
         }
     }
 
+    @Test
+    public void testDemo() {
+        DemoOne demoOne = getDemoOne("test-one", 2019);
+        log.info("testDemo ret, {}", demoOne.toString());
+    }
+
+    public DemoOne getDemoOne(String name, Integer age) {
+        DemoOne demoOne;
+        RBucket<DemoOne> bucket = redissonClient.getBucket("bucket-test-0n33-test-01-01");
+
+        if (bucket != null && (demoOne = bucket.get()) != null) {
+            log.info("bucket ret, {}", demoOne.toString());
+            return demoOne;
+        }
+
+        log.info("DemoOne ret = {}", bucket.get());
+        demoOne = new DemoOne();
+        demoOne.setAge(age);
+        demoOne.setName(name);
+
+        bucket.set(demoOne, 10, TimeUnit.MINUTES);
+        return demoOne;
+    }
 
 }
