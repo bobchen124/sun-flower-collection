@@ -1,5 +1,6 @@
 package com.sun.flower.jetcache.service;
 
+import com.sun.flower.common.exception.BaseBusinessException;
 import com.sun.flower.jetcache.param.ParamDTO;
 
 /**
@@ -10,5 +11,7 @@ import com.sun.flower.jetcache.param.ParamDTO;
 public interface IBaseCacheService {
 
     String getCache(ParamDTO arg) throws Exception;
+
+    String getCache2(ParamDTO arg) throws BaseBusinessException;
 
 }

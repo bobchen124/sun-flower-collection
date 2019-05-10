@@ -28,7 +28,7 @@ public class BaseTest {
         paramDTO.setPage(1);
 
         for (;;) {
-            System.out.println("====" + cacheService.getCache(paramDTO));
+            System.out.println("====" + cacheService.getCache2(paramDTO));
 
             Thread.sleep(30000);
         }

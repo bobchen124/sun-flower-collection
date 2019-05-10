@@ -80,6 +80,7 @@ public class ServiceAspect {
 
             return targetRet;
         } catch (RuntimeException|RedisBusinessException re) {
+            log.info("RuntimeException|RedisBusinessException , {}", re.getMessage());
             // 运行时异常，比如redis连接超时，空指针异常等，返回本地缓存对象
             try {
                 Object tartgetPropertyObj = propertyReadMethod.invoke(targetObj);
