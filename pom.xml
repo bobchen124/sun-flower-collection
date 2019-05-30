@@ -19,6 +19,7 @@
         <module>sun-flower-collection-mq</module>
         <module>sun-flower-collection-jetcache</module>
         <module>sun-flower-collection-common</module>
+        <module>sun-flower-collection-spark</module>
     </modules>
 
     <parent>
