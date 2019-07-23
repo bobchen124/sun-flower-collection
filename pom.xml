@@ -20,6 +20,7 @@
         <module>sun-flower-collection-jetcache</module>
         <module>sun-flower-collection-common</module>
         <module>sun-flower-collection-spark</module>
+        <module>sun-flower-collection-nlp</module>
     </modules>
 
     <parent>
