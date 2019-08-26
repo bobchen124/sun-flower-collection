@@ -22,6 +22,7 @@
         <module>sun-flower-collection-spark</module>
         <module>sun-flower-collection-nlp</module>
         <module>sun-flower-collection-tcc</module>
+        <module>sun-flower-collection-dubbo</module>
     </modules>
 
     <parent>

@@ -1,0 +1,22 @@
+server:
+  port: 8081
+  undertow:
+    io-threads: 4
+    worker-threads: 20
+    buffer-size: 1024
+    direct-buffers: true
+
+spring:
+  application:
+    name: sun-flower-dubbo-consumer
+dubbo:
+  registry:
+    address: zookeeper://192.168.1.186:2181
+  protocol:
+    name: dubbo
+    port: 20891
+    serialization: kryo
+  application:
+    name: sun-flower-dubbo-consumer
+  consumer:
+    threads: 16
