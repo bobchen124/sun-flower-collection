@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <Properties>
+        <!-- 属性,常量-->
+        <Property name="LOG_HOME">/Users/chenbo/logs</Property>
+        <!-- 相对位置，项目路径下-->
+        <Property name="LOG_NAME">sun-flower-collection-dubbo</Property>
+    </Properties>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[sun-flower-dubbo-order] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>[sun-flower-dubbo-order] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="sun.flower" level="info"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.apache.zookeeper" level="info"/>
+    <logger name="io.netty" level="info"/>
+
+    <root>
+        <appender-ref ref="file"></appender-ref>
+        <appender-ref ref="STDOUT"></appender-ref>
+    </root>
+
+    <!-- Dubbo 质量日志 -->
+    <appender name="qualitylogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order-quality.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order-quality.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="sun.flower.dubbo.common.filter.QualityLogFilter" level="info" additivity="false">
+        <appender-ref ref="qualitylogAppender"></appender-ref>
+    </logger>
+
+</configuration>

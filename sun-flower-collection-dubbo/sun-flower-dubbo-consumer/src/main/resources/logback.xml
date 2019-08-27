@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-consumer.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[sun-flower-dubbo-consumer] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-consumer.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>[sun-flower-dubbo-consumer] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="sun.flower" level="info"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.apache.zookeeper" level="info"/>
+
+    <root>
+        <appender-ref ref="file"></appender-ref>
+        <appender-ref ref="STDOUT"></appender-ref>
+    </root>
+
+</configuration>

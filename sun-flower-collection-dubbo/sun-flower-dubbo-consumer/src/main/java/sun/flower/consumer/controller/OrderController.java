@@ -20,6 +20,6 @@ public class OrderController implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("===" + orderService.sayHello("start..."));
+        //System.out.println("===" + orderService.sayHello("start..."));
     }
 }

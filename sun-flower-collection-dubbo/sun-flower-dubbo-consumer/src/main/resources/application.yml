@@ -16,6 +16,7 @@ dubbo:
     name: dubbo
     port: 20891
     serialization: kryo
+    accesslog: true
   application:
     name: sun-flower-dubbo-consumer
   consumer:

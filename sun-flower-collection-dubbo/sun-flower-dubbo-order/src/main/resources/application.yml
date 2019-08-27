@@ -16,5 +16,10 @@ dubbo:
     name: dubbo
     port: 20891
     serialization: kryo
+    accesslog: true
   application:
     name: sun-flower-dubbo-order
+  provider:
+    #accesslog: /Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order-qua.log
+    accesslog: true
+    filter: qualityLog
