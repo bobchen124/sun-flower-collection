@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <Properties>
-        <!-- 属性,常量-->
-        <Property name="LOG_HOME">/Users/chenbo/logs</Property>
-        <!-- 相对位置，项目路径下-->
-        <Property name="LOG_NAME">sun-flower-collection-dubbo</Property>
-    </Properties>
-
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
