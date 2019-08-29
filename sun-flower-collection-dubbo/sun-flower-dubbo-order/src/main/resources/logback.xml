@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property name="appname" value="sun-flower-collection-dubbo" />
+    <property name="logger.root" value="/Users/chenbo/logs" />
+
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order.log</file>
+        <file>${logger.root}/${appname}/sun-flower-dubbo-order.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>[sun-flower-dubbo-order] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${logger.root}/${appname}/sun-flower-dubbo-order.%d{yyyy-MM-dd}.log</FileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -28,12 +31,12 @@
 
     <!-- Dubbo 质量日志 -->
     <appender name="qualitylogAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order-quality.log</file>
+        <file>${logger.root}/${appname}/sun-flower-dubbo-order-quality.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>/Users/chenbo/logs/sun-flower-collection-dubbo/sun-flower-dubbo-order-quality.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${logger.root}/${appname}/sun-flower-dubbo-order-quality.%d{yyyy-MM-dd}.log</FileNamePattern>
         </rollingPolicy>
     </appender>
 
