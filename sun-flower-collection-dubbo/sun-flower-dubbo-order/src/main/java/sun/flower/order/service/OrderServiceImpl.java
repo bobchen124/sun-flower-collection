@@ -10,7 +10,7 @@ import sun.flower.api.order.IOrderService;
  * @Date: 2019/8/26 14:32
  **/
 @Slf4j
-@Service(version = "1.0", interfaceClass = IOrderService.class)
+@Service(version = "1.0", interfaceClass = IOrderService.class, retries = 3)
 public class OrderServiceImpl implements IOrderService {
 
     @Override
