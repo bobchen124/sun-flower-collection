@@ -1,0 +1,15 @@
+server:
+  port: 8099
+  undertow:
+    io-threads: 4
+    worker-threads: 20
+    buffer-size: 1024
+    direct-buffers: true
+
+spring:
+  application:
+    name: sun-flower-kafka-producer
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

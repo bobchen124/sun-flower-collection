@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="appname" value="sun-flower-collection-kafka" />
+    <property name="logger.root" value="/Users/chenbo/logs" />
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logger.root}/${appname}/sun-flower-kafka.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[sun-flower-kafka] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logger.root}/${appname}/sun-flower-kafka.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>[sun-flower-kafka] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="sun.flower" level="info"/>
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.apache.zookeeper" level="info"/>
+    <logger name="io.netty" level="info"/>
+
+    <root>
+        <appender-ref ref="file"></appender-ref>
+        <appender-ref ref="STDOUT"></appender-ref>
+    </root>
+
+</configuration>

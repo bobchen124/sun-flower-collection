@@ -24,6 +24,7 @@
         <module>sun-flower-collection-tcc</module>
         <module>sun-flower-collection-dubbo</module>
         <module>sun-flower-collection-hystrix</module>
+        <module>sun-flower-collection-kafka</module>
     </modules>
 
     <parent>
